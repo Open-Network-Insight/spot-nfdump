@@ -725,6 +725,11 @@ time_t 		t_start, t_end;
 uint32_t	limitflows;
 char 		Ident[IDENTLEN];
 
+
+    //Set timezone to UTC for standarization.
+    setenv("TZ","UTC",1);
+    tzset();
+
 	rfile = Rfile = Mdirs = wfile = ffile = filter = tstring = stat_type = NULL;
 	byte_limit_string = packet_limit_string = NULL;
 	fdump = aggregate = 0;
