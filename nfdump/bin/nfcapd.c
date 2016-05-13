@@ -762,6 +762,10 @@ srecord_t	*commbuff;
 
 int main(int argc, char **argv) {
  
+//Set timezone to UTC f or standarization.
+setenv("TZ","UTC",1);
+tzset();
+
 char	*bindhost, *filter, *datadir, pidstr[32], *launch_process;
 char	*userid, *groupid, *checkptr, *listenport, *mcastgroup, *extension_tags;
 char	*Ident, *dynsrcdir, pidfile[MAXPATHLEN];
