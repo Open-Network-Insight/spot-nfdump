@@ -1,67 +1,32 @@
 #!/bin/bash
 
+dependencies=(tar make gcc m4 automake autoconf flex byacc)
 
-#########################################################
-#--- gcc ----------------------------------#
-#########################################################
+# detect distribution
+# to add other distribution simply create a test case with installation commands
 
-if [ -z `which gcc` ]; then
-
-    echo "You dont have installed gcc, please install it."
-    exit 1
-
+if [ -f /etc/redhat-release ]; then
+    install_cmd="yum -y install"
+    echo "installation command: $install_cmd"
+elif [ -f /etc/debian_version ]; then
+    install_cmd="apt-get install -y"
+    echo "installation command: $install_cmd"
+    apt-get update
 fi
 
-#########################################################
-#--- lex/flex  ----------------------------------#
-#########################################################
-
-if [ -z `which flex` ]; then
-
-    tar xvf flex-2.5.39.tar.gz
-    cd flex-2.5.39
-    ./configure
-    make
-    sudo make install
-    cd ..
-    
-fi
 
 #########################################################
-#--- Install autoconf ----------------------------------#
+#--- dependencies ----------------------------------#
 #########################################################
 
-tar xvf autoconf-2.69.tar.gz
-cd autoconf-2.69
-./configure
-make
-sudo make install
-
-if [ -z `which autoconf` ]; then
-    
-    echo "ERROR: There was a problem  with the autoconf installation."
-    exit 1
-    
-fi
-cd ..
-
-#########################################################
-#--- Install automake ----------------------------------#
-#########################################################
-
-tar xvf automake-1.14.tar.gz
-cd automake-1.14
-./configure
-make
-sudo make install
-
-if [ -z `which automake`   ]; then
-
-    echo "ERROR: there was a problem with the automake installation"
-    exit 1
-    
-fi
-cd ..
+for dep in ${dependencies[@]}; do
+    if type ${dep} >/dev/null 2>&1; then
+        echo "${dep} found"
+    else
+        echo "installing ${dep}"
+        ${install_cmd} ${dep}
+    fi
+done
 
 #########################################################
 #--- Install nfdump ----------------------------------#
@@ -70,16 +35,16 @@ cd ..
 cd nfdump
 ./configure --enable-sflow
 make
-sudo make install
+make install
 
-if [ -z `which nfdump`   ]; then
-     
+if type nfdump >/dev/null 2>&1; then
+    echo "nfdump found"
+else
     echo "ERROR: there was a problem with the nfdump installation"
-    exit 1
-          
+    exit 1      
 fi
+
 cd ..
 
 echo "Done !!!!!!!!!!!!!!!!!!!!!!!!"
 nfdump -V
-
