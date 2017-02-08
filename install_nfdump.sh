@@ -1,6 +1,21 @@
 #!/bin/bash
 
+dir=$1
+install_path=${dir:-/opt/spot/bin}
 dependencies=(tar make gcc m4 automake autoconf flex byacc)
+
+log_cmd () {
+
+    printf "\n****SPOT.NFDUMP.Install.sh****\n"
+    date +"%y-%m-%d %H:%M:%S"
+    printf "$1\n\n"
+
+}
+
+if [ ! -d ${install_path} ]; then
+        log_cmd "${install_path} not created, override with 'install_nfdump.sh [optional path]'"
+        exit 1   
+fi
 
 # detect distribution
 # to add other distribution simply create a test case with installation commands
@@ -33,7 +48,7 @@ done
 #########################################################
 
 cd nfdump
-./configure --enable-sflow
+./configure --prefix=${install_path} --enable-sflow
 make
 make install
 
