@@ -49,7 +49,7 @@ done
 #########################################################
 
 cd nfdump
-./configure --without-man --prefix=${install_path} --enable-sflow
+./configure --prefix=${install_path} --enable-sflow
 make
 make install
 
