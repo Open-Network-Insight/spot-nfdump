@@ -1,7 +1,8 @@
 #!/bin/bash
 
 dir=$1
-install_path=${dir:-/opt/spot/bin}
+install_path=${dir:-/opt/spot}
+bin=${install_path}/bin
 dependencies=(tar make gcc m4 automake autoconf flex byacc)
 
 log_cmd () {
@@ -48,11 +49,11 @@ done
 #########################################################
 
 cd nfdump
-./configure --prefix=${install_path} --enable-sflow
+./configure --without-man --prefix=${install_path} --enable-sflow
 make
 make install
 
-if type nfdump >/dev/null 2>&1; then
+if type ${bin}/nfdump >/dev/null 2>&1; then
     log_cmd "nfdump found"
 else
     log_cmd "ERROR: there was a problem with the nfdump installation"
@@ -62,4 +63,4 @@ fi
 cd ..
 
 log_cmd "Done !!!!!!!!!!!!!!!!!!!!!!!!"
-nfdump -V
+${bin}/nfdump -V
