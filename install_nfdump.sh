@@ -7,7 +7,7 @@ dependencies=(tar make gcc m4 automake autoconf flex byacc)
 
 log_cmd () {
 
-    printf "\n****SPOT.NFDUMP.Install.sh****\n"
+    printf "\n****SPOT.NFDUMP.install_nfdump.sh****\n"
     date +"%y-%m-%d %H:%M:%S"
     printf "$1\n\n"
 
